@@ -1,0 +1,133 @@
+html, body {
+  height: 100%;
+  margin: 0; 
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  /* background: linear-gradient(white 15%, gray 0%); */
+  background: gray; 
+}
+
+.drop-down-list-item {
+  padding-left: 5px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.drop-down-list-item > input {
+  margin: 0.3rem;
+}
+
+.drop-down-button {
+    color: inherit;
+    position: relative;
+    border: 1px solid var(--col-separator);
+    border-radius: 3px;
+    width: var(--width-list);
+    font-size: 12px;
+    height: 30px;
+    text-align: left;
+    padding-left: 5px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.drop-down-icon {
+  position: absolute;
+  width: 30px;
+  height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  right: 0;
+}
+
+.new-drop-down {
+  --font-size: 12px;
+  --width-list: 135px;
+}
+
+.new-drop-down {
+  font-size: var(--font-size);
+  width: var(--width-list);
+  position: relative;
+  z-index: 1;
+  margin-left: 10px;
+}
+
+/* button.new-drop-down__button.new-drop-down--is-open {
+    color: var(--col-primary-active);
+}
+
+button.new-drop-down__button.new-drop-down--is-open span {
+    color: var(--col-primary-text);
+} */
+
+.drop-down-list-wrapper {
+  border: 1px solid var(--col-separator);
+  max-width: var(--width-list);
+  width: 100%;
+  background: white;
+  position: absolute;
+}
+
+.card-photo {
+  width: 250px;
+  height: 250px;
+  border-radius: 2px;
+}
+
+.card-details {
+  font-size: 15px; 
+}
+
+.card {
+  background: white;
+  margin: 12px; 
+  padding-left: 20px;
+  border-radius: 5px;
+  height: 400px;
+  width: 275px; 
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 350px 350px 350px 350px;
+  margin-top: 50px;
+  margin-left: 15px; 
+  height: 100%;
+}
+
+.filters {
+  display: flex; 
+  height: 100px; 
+  background-color: #d3d3d3;
+  z-index: 1;
+}
+
+.curiosity-details {
+  height: 100%; 
+  z-index: -1;
+  background-color: white;
+  border: 1px white solid;
+}
+
+.sol {
+  position: absolute;
+  margin-left: 200px; 
+}
+
+h4 {
+  margin: 10px; 
+  font-size: 15px;
+}
+
+p {
+  font-size: 14px;
+}
+
+

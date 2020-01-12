@@ -1,26 +1,99 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import './style.css';
+import { API_Key } from './config';
+import CameraFilter from './CameraFilter';
+import axios from 'axios'; 
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cameras: [],
+      photos: { "Front Hazard Avoidance Camera": [0], "Navigation Camera": [0], "Mast Camera": [0], "Chemistry and Camera Complex": [0], "Mars Hand Lens Imager": [0], "Mars Descent Imager": [0], "Rear Hazard Avoidance Camera": [0] },
+      launched: '',
+      landed: '',
+      maxSol: 0,
+      input: '', 
+    }
+  }
+
+  componentDidMount = () => {
+    this.getCameras();
+    this.getPhotos(1);
+  };
+
+  getCameras = () => {
+    const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/?api_key=${API_Key}`; 
+    axios.get(url)
+      .then((res) => {
+        console.log(res.data.rover.cameras);
+        this.setState({
+          cameras: res.data.rover.cameras,
+          launched: res.data.rover.launch_date,
+          landed: res.data.rover.landing_date,
+          maxSol: res.data.rover.max_sol,
+        });
+      })
+      .catch((err) => {
+        console.log(err); 
+      });
+  };
+
+  getPhotos = sol => {
+    console.log('sol', sol);
+    const { photos } = this.state;
+    const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=${sol}&api_key=${API_Key}`;
+    axios.get(url)
+      .then((res) => {
+        console.log(res.data.photos);
+        for (let j = 0; j < res.data.photos.length; j++) {
+          let cameraName = res.data.photos[j].camera.full_name;
+          let photoURL = res.data.photos[j].img_src;
+          photos[cameraName][0]++;
+          if (photos[cameraName].length <= 1) {
+            photos[cameraName].push(photoURL); 
+          } else {
+            continue; 
+          }
+        }
+        this.setState({
+          photos,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  handleChange = e => {
+    const { input } = this.state;
+    this.setState({
+      input: e.target.value,
+    });
+    this.getPhotos(e.target.value);
+  };
+
+  render() {
+    const { cameras, photos, launched, landed, maxSol } = this.state;
+    return(
+        <div>
+          <div className="curiosity-details">
+            <h1>Curiosity Images</h1>
+            <p>{`Launched: ${launched} | Landed: ${landed} | Max Sol: ${maxSol}`}</p>
+          </div>
+          <div className="filters">
+            <div>
+              <h4>Cameras</h4> 
+              <CameraFilter cameras={cameras} photos={photos} />
+            </div>
+            <div className="sol">
+              <h4>Sol</h4>
+              <input type="text" onChange={this.handleChange} />
+            </div>
+          </div>
+        </div>
+    );
+  }
 }
 
 export default App;
