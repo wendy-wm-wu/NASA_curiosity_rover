@@ -9,7 +9,7 @@ class App extends Component {
     super(props);
     this.state = {
       cameras: [],
-      photos: { "Front Hazard Avoidance Camera": [0], "Navigation Camera": [0], "Mast Camera": [0], "Chemistry and Camera Complex": [0], "Mars Hand Lens Imager": [0], "Mars Descent Imager": [0], "Rear Hazard Avoidance Camera": [0] },
+      photos: {},
       launched: '',
       landed: '',
       maxSol: 0,
@@ -18,8 +18,7 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    this.getCameras();
-    this.getPhotos(1);
+    this.getCameras(); 
   };
 
   getCameras = () => {
@@ -27,12 +26,19 @@ class App extends Component {
     axios.get(url)
       .then((res) => {
         console.log(res.data.rover.cameras);
+        let output = {};
+        for (let i = 0; i < res.data.rover.cameras.length; i++) {
+          let camera = res.data.rover.cameras[i];
+          output[camera.full_name] = [0]; 
+        }
         this.setState({
           cameras: res.data.rover.cameras,
+          photos: output,
           launched: res.data.rover.launch_date,
           landed: res.data.rover.landing_date,
           maxSol: res.data.rover.max_sol,
         });
+        this.getPhotos(1);
       })
       .catch((err) => {
         console.log(err); 
@@ -40,7 +46,6 @@ class App extends Component {
   };
 
   getPhotos = sol => {
-    console.log('sol', sol);
     const { photos } = this.state;
     const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=${sol}&api_key=${API_Key}`;
     axios.get(url)
@@ -66,7 +71,6 @@ class App extends Component {
   };
 
   handleChange = e => {
-    const { input } = this.state;
     this.setState({
       input: e.target.value,
     });
@@ -88,7 +92,7 @@ class App extends Component {
             </div>
             <div className="sol">
               <h4>Sol</h4>
-              <input type="text" onChange={this.handleChange} />
+              <input type="text" className="sol-input" onChange={this.handleChange} />
             </div>
           </div>
         </div>

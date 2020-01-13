@@ -7,9 +7,10 @@ const Card = ({ camera, photos }) => {
       <h3>{camera}</h3>
       <p>{`Photos: ${photos[camera][0]}`}</p>
       {photos[camera][1] && (
-    <div>
-        <p>Sample photo: </p>
-        <img src={photos[camera][1]} alt={`${camera}'s view of outerspace`} className="card-photo"></img>
+        <div>
+          <p>Sample photo: </p>
+          <img src={photos[camera][1]} alt={`${camera}'s view of outerspace`} className="card-photo">
+          </img>
         </div>
       )}
     </div>

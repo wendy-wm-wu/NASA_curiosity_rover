@@ -19,19 +19,34 @@ class CameraFilter extends Component {
     });
   };
 
-  checkItem = (e, camera) => {
-    console.log('onchange'); 
-    let { itemChecked } = this.state; 
-    itemChecked[camera] = e.target.checked;
-    this.setState({
-      itemChecked,
-    });
+  checkItem = e => {
+    const { itemChecked } = this.state; 
+    var checkboxes = document.getElementsByName('camera-checkbox');
+    let selected = e.target.value;
+    if (selected === 'select-all') {
+     let output = {};
+     for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = true; 
+        output[checkboxes[i].value] = true; 
+     }
+     console.log('output', output); 
+     this.setState({ itemChecked: output });
+    } else if (selected === 'clear') {
+      for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false; 
+      }
+      this.setState({ itemChecked: {} })
+    } else {
+      itemChecked[selected] = e.target.checked;
+      this.setState({ itemChecked }); 
+    }
   };
 
   renderSelected = () => {
     const { expanded, itemChecked } = this.state;
     const { cameras } = this.props;
     let labelContent = ''; 
+
     let count = 0;
     for (let boolean of Object.values(itemChecked)) {
       if (boolean) count++; 
@@ -42,7 +57,7 @@ class CameraFilter extends Component {
       labelContent = `${cameras.length} Selected`;
     } else {
       labelContent = `${count} Selected`;
-    }
+    } 
     const activeClass = expanded ? "drop-down-expanded" : "";
     return (
       <button className={`drop-down-button ${activeClass}`} onClick={this.toggleExpanded}>
@@ -55,16 +70,22 @@ class CameraFilter extends Component {
   renderDropDown = () => {
     const { cameras } = this.props; 
 
-    return cameras.map((item, index) => {
-      return (
-        <Checkbox camera={item} key={index} checkItem={this.checkItem} />
-      );
-    });
+    return (
+      <>
+      <div className="buttons">
+        <button value="select-all" className="select-all" onClick={this.checkItem}>Select All</button>
+        <button value="clear" className="clear" onClick={this.checkItem}>Clear</button>
+      </div>
+        {cameras.map((item, index) =>
+            <Checkbox camera={item} key={index} checkItem={this.checkItem} />
+        )}
+      </>
+    )
   };
 
   render() {
     console.log('checklist', this.state.itemChecked);
-    const { photos, cameras } = this.props;
+    const { photos } = this.props;
     const { itemChecked } = this.state; 
 
     return(
@@ -72,7 +93,7 @@ class CameraFilter extends Component {
       <div className="new-drop-down" ref={wrapper => (this.wrapper = wrapper)}>
         {this.renderSelected()}
         {this.state.expanded && (
-          <div className="drop-down-list-wrapper">
+          <div className="drop-down-list-wrapper">  
             {this.renderDropDown()}
           </div>
         )}
