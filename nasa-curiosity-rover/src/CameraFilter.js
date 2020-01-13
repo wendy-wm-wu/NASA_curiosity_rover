@@ -67,16 +67,15 @@ class CameraFilter extends Component {
 
   renderDropDown = () => {
     const { cameras } = this.props; 
-
     return (
       <>
-      <div className="buttons">
-        <button value="select-all" className="select-all" onClick={this.checkItem}>Select All</button>
-        <button value="clear" className="clear" onClick={this.checkItem}>Clear</button>
-      </div>
-        {cameras.map((item, index) =>
-            <Checkbox camera={item} key={index} checkItem={this.checkItem} />
-        )}
+        <div className="buttons">
+          <button value="select-all" className="select-all" onClick={this.checkItem}>Select All</button>
+          <button value="clear" className="clear" onClick={this.checkItem}>Clear</button>
+        </div>
+          {cameras.map((item, index) =>
+              <Checkbox camera={item} key={index} checkItem={this.checkItem} />
+          )}
       </>
     )
   };
@@ -84,7 +83,7 @@ class CameraFilter extends Component {
   render() {
     const { photos } = this.props;
     const { itemChecked } = this.state; 
-
+    
     return(
       <div>
       <div className="new-drop-down" ref={wrapper => (this.wrapper = wrapper)}>

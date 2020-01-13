@@ -25,7 +25,6 @@ class App extends Component {
     const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/?api_key=${API_Key}`; 
     axios.get(url)
       .then((res) => {
-        console.log(res.data.rover.cameras);
         let output = {};
         for (let i = 0; i < res.data.rover.cameras.length; i++) {
           let camera = res.data.rover.cameras[i];
@@ -50,7 +49,6 @@ class App extends Component {
     const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=${sol}&api_key=${API_Key}`;
     axios.get(url)
       .then((res) => {
-        console.log(res.data.photos);
         for (let j = 0; j < res.data.photos.length; j++) {
           let cameraName = res.data.photos[j].camera.full_name;
           let photoURL = res.data.photos[j].img_src;
