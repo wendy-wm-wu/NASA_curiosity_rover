@@ -29,7 +29,6 @@ class CameraFilter extends Component {
         checkboxes[i].checked = true; 
         output[checkboxes[i].value] = true; 
      }
-     console.log('output', output); 
      this.setState({ itemChecked: output });
     } else if (selected === 'clear') {
       for (let i = 0; i < checkboxes.length; i++) {
@@ -51,10 +50,9 @@ class CameraFilter extends Component {
     for (let boolean of Object.values(itemChecked)) {
       if (boolean) count++; 
     }
+
     if (count === 0) {
-      labelContent = "0 Selected";
-    } else if (count === cameras.length) {
-      labelContent = `${cameras.length} Selected`;
+      labelContent = "0 Selected"; 
     } else {
       labelContent = `${count} Selected`;
     } 
@@ -84,7 +82,6 @@ class CameraFilter extends Component {
   };
 
   render() {
-    console.log('checklist', this.state.itemChecked);
     const { photos } = this.props;
     const { itemChecked } = this.state; 
 
@@ -99,7 +96,7 @@ class CameraFilter extends Component {
         )}
       </div>
       <div className="grid">
-          {Object.keys(itemChecked).filter((item) => itemChecked[item] === true).map((camera, index) => <Card key={index} camera={camera} photos={photos} />)}
+           {Object.keys(itemChecked).filter((item) => itemChecked[item] === true).map((camera, index) => <Card key={index} camera={camera} photos={photos} />)}
       </div>
       </div>
     );
