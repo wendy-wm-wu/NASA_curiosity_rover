@@ -43,7 +43,6 @@ class CameraFilter extends Component {
 
   renderSelected = () => {
     const { expanded, itemChecked } = this.state;
-    const { cameras } = this.props;
     let labelContent = ''; 
 
     let count = 0;
@@ -83,7 +82,7 @@ class CameraFilter extends Component {
   render() {
     const { photos } = this.props;
     const { itemChecked } = this.state; 
-    
+
     return(
       <div>
       <div className="new-drop-down" ref={wrapper => (this.wrapper = wrapper)}>
